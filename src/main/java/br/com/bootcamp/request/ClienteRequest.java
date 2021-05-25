@@ -1,12 +1,12 @@
 package br.com.bootcamp.request;
 
 import br.com.bootcamp.model.Cliente;
-import br.com.bootcamp.repository.ClienteRepository;
 import br.com.bootcamp.util.UniqueField;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.*;
+import javax.persistence.EntityManager;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -41,7 +41,7 @@ public class ClienteRequest {
         return new BigInteger(1, messageDigest.digest()).toString(16);
     }
 
-    public Cliente converter(ClienteRepository clienteRepository) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public Cliente converter(EntityManager entityManager) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         return new Cliente(login, geradorDeHashDaSenha(senha));
     }
 }

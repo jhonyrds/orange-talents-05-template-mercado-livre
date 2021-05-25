@@ -28,4 +28,13 @@ public class Cliente {
         this.senha = senha;
         this.instanteCadastro = LocalDateTime.now();
     }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", Horário do cadastro=" + instanteCadastro +
+                '}';
+    }
 }
