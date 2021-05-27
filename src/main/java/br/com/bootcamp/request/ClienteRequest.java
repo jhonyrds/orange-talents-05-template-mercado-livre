@@ -1,6 +1,7 @@
 package br.com.bootcamp.request;
 
 import br.com.bootcamp.model.Cliente;
+import br.com.bootcamp.util.SenhaLimpa;
 import br.com.bootcamp.util.UniqueField;
 
 import java.io.UnsupportedEncodingException;
@@ -15,33 +16,18 @@ import java.time.LocalDateTime;
 public class ClienteRequest {
     @Email
     @NotBlank
-    @UniqueField(entityName = Cliente.class, fieldName = "login")
-    private String login;
+    @UniqueField(entityName = Cliente.class, fieldName = "email")
+    private String email;
     @NotBlank @Size(min = 6)
     private String senha;
     private LocalDateTime instanteCadastro;
 
-    public ClienteRequest(String login, String senha) throws NoSuchAlgorithmException {
-        this.login = login;
+    public ClienteRequest(String email, String senha) throws NoSuchAlgorithmException {
+        this.email = email;
         this.senha = senha;
     }
 
-    @Override
-    public String toString() {
-        return "ClienteRequest{" +
-                "login='" + login + '\'' +
-                ", senha='" + senha + '\'' +
-                ", instanteCadastro=" + instanteCadastro +
-                '}';
-    }
-
-    public static String geradorDeHashDaSenha(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest messageDigest =  MessageDigest.getInstance("SHA-256");
-        messageDigest.update(password.getBytes("UTF-8"));
-        return new BigInteger(1, messageDigest.digest()).toString(16);
-    }
-
     public Cliente converter(EntityManager entityManager) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        return new Cliente(login, geradorDeHashDaSenha(senha));
+        return new Cliente(email, new SenhaLimpa(senha));
     }
 }
