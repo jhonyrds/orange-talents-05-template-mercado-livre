@@ -34,6 +34,9 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
     private Set<CaracteristicaProduto> caracteristicas = new HashSet<>();
 
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<ImagemProduto> imagens = new HashSet<>();
+
     @NotBlank
     @Size(max = 1000)
     private String descricao;
@@ -49,10 +52,11 @@ public class Produto {
     LocalDateTime instanteDoCadastro;
 
     @Deprecated
-    public Produto(){
+    public Produto() {
     }
 
-    public Produto(String nome, BigDecimal valor, Integer quantidade, Collection<CaracteristicaRequest> caracteristicas,
+    public Produto(String nome, BigDecimal valor, Integer quantidade,
+                   Collection<CaracteristicaRequest> caracteristicas,
                    String descricao, Categoria idCategoria, Cliente idCliente) {
         this.nome = nome;
         this.valor = valor;
@@ -66,54 +70,30 @@ public class Produto {
         this.instanteDoCadastro = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public Set<CaracteristicaProduto> getCaracteristicas() {
-        return caracteristicas;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public Categoria getIdCategoria() {
-        return idCategoria;
-    }
-
-    public Cliente getIdCliente() {
-        return idCliente;
-    }
-
-    public LocalDateTime getInstanteDoCadastro() {
-        return instanteDoCadastro;
+    public void associaImagem(Set<String> links) {
+        Set<ImagemProduto> imagens = links.stream()
+                .map(link -> new ImagemProduto(this, link))
+                .collect(Collectors.toSet());
+        this.imagens.addAll(imagens);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Produto produto = (Produto) o;
-
-        return caracteristicas.equals(produto.caracteristicas);
+    public String toString() {
+        return "Produto{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", valor=" + valor +
+                ", quantidade=" + quantidade +
+                ", caracteristicas=" + caracteristicas +
+                ", imagens=" + imagens +
+                ", descricao='" + descricao + '\'' +
+                ", idCategoria=" + idCategoria +
+                ", idCliente=" + idCliente +
+                ", instanteDoCadastro=" + instanteDoCadastro +
+                '}';
     }
 
-    @Override
-    public int hashCode() {
-        return caracteristicas.hashCode();
+    public boolean clienteAssociado(Cliente usuarioAssociado) {
+        return this.idCliente.equals(usuarioAssociado);
     }
 }

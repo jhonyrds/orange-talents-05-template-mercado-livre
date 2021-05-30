@@ -30,6 +30,8 @@ public class ProdutoRequest {
     @Size(min = 3)
     private List<CaracteristicaRequest> caracteristicas = new ArrayList<>();
 
+    private List<ImagemRequest> fotos = new ArrayList<>();
+
     @NotBlank
     @Size(max = 1000)
     private String descricao;
@@ -39,11 +41,13 @@ public class ProdutoRequest {
     private Long idCategoria;
 
     public ProdutoRequest(String nome, BigDecimal valor, Integer quantidade,
-                          List<CaracteristicaRequest> caracteristicas, String descricao, Long idCategoria) {
+                          List<CaracteristicaRequest> caracteristicas, List<ImagemRequest> fotos,
+                          String descricao, Long idCategoria) {
         this.nome = nome;
         this.valor = valor;
         this.quantidade = quantidade;
         this.caracteristicas.addAll(caracteristicas);
+        this.fotos.addAll(fotos);
         this.descricao = descricao;
         this.idCategoria = idCategoria;
     }
@@ -52,6 +56,8 @@ public class ProdutoRequest {
         return caracteristicas;
     }
 
+    public List<ImagemRequest> getFotos(){return fotos;}
+
     @Override
     public String toString() {
         return "ProdutoRequest{" +
@@ -59,6 +65,7 @@ public class ProdutoRequest {
                 ", valor=" + valor +
                 ", quantidade=" + quantidade +
                 ", caracteristicas=" + caracteristicas +
+                ", fotos=" + fotos +
                 ", descricao='" + descricao + '\'' +
                 ", idCategoria=" + idCategoria +
                 '}';
