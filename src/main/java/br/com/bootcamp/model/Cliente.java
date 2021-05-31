@@ -4,7 +4,10 @@ import br.com.bootcamp.util.SenhaLimpa;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -16,14 +19,17 @@ public class Cliente implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Email @NotBlank
+    @Email
+    @NotBlank
     private String email;
-    @NotBlank @Size(min = 6)
+    @NotBlank
+    @Size(min = 6)
     private String senha;
     private LocalDateTime instanteCadastro;
 
     @Deprecated
-    public Cliente(){}
+    public Cliente() {
+    }
 
     public Cliente(String email, SenhaLimpa senha) {
         this.email = email;

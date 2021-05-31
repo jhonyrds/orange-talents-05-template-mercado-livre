@@ -37,8 +37,8 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
     private void autenticarCliente(String token) {
         Long idCliente = geradorDeToken.getIdCliente(token);
-        Cliente cliente = clienteRepository.findById(idCliente).get();
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(cliente, null, cliente.getAuthorities());
+        Cliente usuarioLogado = clienteRepository.findById(idCliente).get();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuarioLogado, null, usuarioLogado.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
