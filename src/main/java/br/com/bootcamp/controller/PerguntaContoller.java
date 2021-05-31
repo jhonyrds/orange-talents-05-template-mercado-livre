@@ -1,11 +1,10 @@
 package br.com.bootcamp.controller;
 
-
 import br.com.bootcamp.model.Cliente;
-import br.com.bootcamp.model.OpiniaoProduto;
+import br.com.bootcamp.model.Pergunta;
 import br.com.bootcamp.model.Produto;
 import br.com.bootcamp.repository.ClienteRepository;
-import br.com.bootcamp.request.OpiniaoRequest;
+import br.com.bootcamp.request.PerguntaRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,21 +18,22 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RestController
-public class AdicionaOpiniaoController {
+public class PerguntaContoller {
+
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
     private ClienteRepository clienteRepository;
 
-    @PostMapping("/cadastro-produto/{id}/opiniao")
+    @PostMapping("/cadastro-produto/{id}/pergunta")
     @Transactional
-    public ResponseEntity adicionaOpiniao(@RequestBody @Valid OpiniaoRequest request, @PathVariable("id") Long id, Cliente logado){
+    public ResponseEntity novaPergunta(@RequestBody @Valid PerguntaRequest request, @PathVariable("id") Long id){
         Produto produto = entityManager.find(Produto.class, id);
         Cliente cliente = clienteRepository.findByEmail("exemplo@exemplo.com.br").get();
         if(produto != null) {
-            OpiniaoProduto opiniao = request.converter(produto, cliente);
-            entityManager.persist(opiniao);
+            Pergunta pergunta = request.converter(produto, cliente);
+            entityManager.persist(pergunta);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
