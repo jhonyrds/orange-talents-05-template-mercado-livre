@@ -9,9 +9,8 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Entity
@@ -51,6 +50,13 @@ public class Produto {
 
     LocalDateTime instanteDoCadastro;
 
+    @OneToMany(mappedBy = "produto")
+    @OrderBy("titulo asc")
+    private SortedSet<Pergunta> perguntas = new TreeSet<>();
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<OpiniaoProduto> opinioes = new HashSet<>();
+
     @Deprecated
     public Produto() {
     }
@@ -76,6 +82,47 @@ public class Produto {
                 .collect(Collectors.toSet());
         this.imagens.addAll(imagens);
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public String getDescricaoProduto() {
+        return descricao;
+    }
+
+
+    public Set<CaracteristicaProduto> getCaracteristicas(){
+        return this.caracteristicas;
+    }
+    public <T> Set<T> mapCaracteristicas(
+            Function<CaracteristicaProduto, T> funcaoMap){
+        return this.caracteristicas.stream().map(funcaoMap)
+                .collect(Collectors.toSet());
+    }
+
+    public <T> Set<T> mapImagens(
+            Function<ImagemProduto, T> funcaoMap){
+        return this.imagens.stream().map(funcaoMap)
+                .collect(Collectors.toSet());
+    }
+
+    public <T extends Comparable<T>> SortedSet<T> mapPerguntas(
+            Function<Pergunta, T> funcaoMap){
+        return  this.perguntas.stream().map(funcaoMap)
+                .collect(Collectors.toCollection(TreeSet::new));
+    }
+
+    public <T> Set<T> mapOpinioes(
+            Function<OpiniaoProduto, T> funcaoMap){
+        return  this.opinioes.stream().map(funcaoMap)
+                .collect(Collectors.toSet());
+    }
+
 
     @Override
     public String toString() {

@@ -36,4 +36,8 @@ public class ImagemProduto {
                 ", link='" + link + '\'' +
                 '}';
     }
+
+    public String getLink() {
+        return link;
+    }
 }

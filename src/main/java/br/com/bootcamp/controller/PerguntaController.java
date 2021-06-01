@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RestController
-public class PerguntaContoller {
+public class PerguntaController {
 
     @PersistenceContext
     private EntityManager entityManager;
