@@ -14,6 +14,7 @@ public class DetalheProdutoDto {
     private String descricao;
     private String nome;
     private BigDecimal preco;
+    private Integer quantidade;
     private Set<DetalheProdutoCaracteristica> caracteristicas;
     private Set<String> linksImagens;
     private SortedSet<String> perguntas;
@@ -24,6 +25,7 @@ public class DetalheProdutoDto {
         this.descricao = produto.getDescricaoProduto();
         this.nome = produto.getNome();
         this.preco = produto.getValor();
+        this.quantidade = produto.getQuantidade();
         this.caracteristicas = produto
                 .mapCaracteristicas(DetalheProdutoCaracteristica::new);
         this.linksImagens = produto.mapImagens(imagem -> imagem.getLink());
@@ -49,6 +51,10 @@ public class DetalheProdutoDto {
 
     public BigDecimal getPreco() {
         return preco;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
     }
 
     public Set<DetalheProdutoCaracteristica> getCaracteristicas() {

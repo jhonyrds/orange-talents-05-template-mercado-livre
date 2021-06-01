@@ -95,34 +95,49 @@ public class Produto {
         return descricao;
     }
 
+    public Integer getQuantidade() {
+        return quantidade;
+    }
 
-    public Set<CaracteristicaProduto> getCaracteristicas(){
+    public Set<CaracteristicaProduto> getCaracteristicas() {
         return this.caracteristicas;
     }
+
     public <T> Set<T> mapCaracteristicas(
-            Function<CaracteristicaProduto, T> funcaoMap){
+            Function<CaracteristicaProduto, T> funcaoMap) {
         return this.caracteristicas.stream().map(funcaoMap)
                 .collect(Collectors.toSet());
     }
 
     public <T> Set<T> mapImagens(
-            Function<ImagemProduto, T> funcaoMap){
+            Function<ImagemProduto, T> funcaoMap) {
         return this.imagens.stream().map(funcaoMap)
                 .collect(Collectors.toSet());
     }
 
     public <T extends Comparable<T>> SortedSet<T> mapPerguntas(
-            Function<Pergunta, T> funcaoMap){
-        return  this.perguntas.stream().map(funcaoMap)
+            Function<Pergunta, T> funcaoMap) {
+        return this.perguntas.stream().map(funcaoMap)
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 
     public <T> Set<T> mapOpinioes(
-            Function<OpiniaoProduto, T> funcaoMap){
-        return  this.opinioes.stream().map(funcaoMap)
+            Function<OpiniaoProduto, T> funcaoMap) {
+        return this.opinioes.stream().map(funcaoMap)
                 .collect(Collectors.toSet());
     }
 
+    public boolean clienteAssociado(Cliente usuarioAssociado) {
+        return this.idCliente.equals(usuarioAssociado);
+    }
+
+    public boolean abateDoEstoque(@Positive int quantidade) {
+        if(quantidade <= this.quantidade){
+            this.quantidade-=quantidade;
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public String toString() {
@@ -138,9 +153,5 @@ public class Produto {
                 ", idCliente=" + idCliente +
                 ", instanteDoCadastro=" + instanteDoCadastro +
                 '}';
-    }
-
-    public boolean clienteAssociado(Cliente usuarioAssociado) {
-        return this.idCliente.equals(usuarioAssociado);
     }
 }
