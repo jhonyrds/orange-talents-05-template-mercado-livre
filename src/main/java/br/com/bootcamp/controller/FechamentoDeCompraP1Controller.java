@@ -37,7 +37,7 @@ public class FechamentoDeCompraP1Controller {
         if (abatido) {
             Cliente comprador = clienteRepository.findByEmail("exemplo@exemplo.com.br").get();
             GatewayPagamento gateway = request.getGateway();
-            Compra novaCompra = new Compra(produto, quantidade, comprador, request.getGateway());
+            Compra novaCompra = new Compra(produto, quantidade, comprador, gateway);
             entityManager.persist(novaCompra);
             if (gateway.equals(GatewayPagamento.pagseguro)) {
                 String urlRetornoPagSeguro = uriComponentsBuilder.path("/retorno-pagseguro/{id}")
